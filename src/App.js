@@ -1,19 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Navbar, NavbarBrand } from 'reactstrap';
+//import logo from './logo.svg';
 import './App.css';
-import Menu from './components/MenuComponent';
+import Main from './components/MainComponent';
 
 export default class App extends React.Component {
   render(){
   return (
     <div>
-        <Navbar dark color="primary">
-            <div className="container">
-                <NavbarBrand href="/">Ristrorabte Con Fusion</NavbarBrand>
-            </div>
-        </Navbar>
-        <Menu />
+        <Main/>
     </div>
   );
 }
