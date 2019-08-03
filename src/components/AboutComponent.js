@@ -1,25 +1,40 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media, MediaBody, MediaTitle, MediaSubTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
-function RenderLeader({leaders}){
-  const leader = leaders.map((leader) => {
+function RenderLeader({leader, isLoading, errMess}){
+
+  if(isLoading){
+      return (<Loading />);
+  }
+  else if(errMess){
+    return (
+      <h3>{errMess}</h3>
+    );
+  }
+  else {
+  // const leader = leaders.map((leader) => {
       return (
-        <Media>
-            <Media left middle>
-                <Media object src={leader.image} alt={leader.name} />
+        <Fade in>
+            <Media>
+                <Media left middle>
+                    <Media object src={baseUrl + leader.image} alt={leader.name} />
+                </Media>
+                <Media body className="ml-5 mb-2">
+                    <Media heading>{leader.name}</Media>
+                    <p>{leader.designation}</p>
+                    <p>{leader.description}</p>
+                </Media>
             </Media>
-            <Media body className="ml-5 mb-2">
-                <Media heading>{leader.name}</Media>
-                <p>{leader.designation}</p>
-                <p>{leader.description}</p>
-            </Media>
-        </Media>
+        </Fade>
       );
-  });
-  return leader;
+  // });
+  // return leader;
 }
-
+}
 
 function About(props) {
     return(
@@ -61,7 +76,16 @@ function About(props) {
                     <Card>
                         <CardBody className="bg-faded">
                             <blockquote className="blockquote">
+                          <CardBody className="bg-faded">
+                            <blockquote className="blockquote">
                                 <p className="mb-0">You better cut the pizza in four pieces because
+                                    I am not hungry enough to eat six.</p>
+                                <footer className="blockquote-footer">Yogi Berra,
+                                <cite title="Source Title">The Wit and Wisdom of Yogi Berra,
+                                    P. Pepe, Diversion Books, 2014</cite>
+                                </footer>
+                            </blockquote>
+                        </CardBody>      <p className="mb-0">You better cut the pizza in four pieces because
                                     I am not hungry enough to eat six.</p>
                                 <footer className="blockquote-footer">Yogi Berra,
                                 <cite title="Source Title">The Wit and Wisdom of Yogi Berra,
@@ -72,14 +96,24 @@ function About(props) {
                     </Card>
                 </div>
             </div>
+
             <div className="row row-content">
                 <div className="col-12">
                     <h2>Corporate Leadership</h2>
                 </div>
+                <Stagger in>
                 <div className="col-12 m-5">
-                    <RenderLeader leaders={props.leaders}/>
+
+                    {
+
+                      props.leaders.map((leader) =>
+                        <RenderLeader leader={leader} isLoading={props.leaderLoading} errMess={props.leaderFailed}/>)
+                    }
+
                 </div>
+              </Stagger>
             </div>
+
         </div>
     );
 }
